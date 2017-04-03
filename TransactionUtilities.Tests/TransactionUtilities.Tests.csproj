@@ -54,11 +54,20 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Example\IOrganizationRepository.cs" />
+    <Compile Include="Example\IBillingRepository.cs" />
+    <Compile Include="Example\IUserProfileRepository.cs" />
+    <Compile Include="Example\OrganizationModel.cs" />
+    <Compile Include="Example\UserServiceTests.cs" />
+    <Compile Include="Example\UserModel.cs" />
+    <Compile Include="Example\UserService.cs" />
     <Compile Include="TransactionHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
