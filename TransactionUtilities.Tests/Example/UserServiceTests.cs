@@ -101,5 +101,42 @@ namespace TransactionUtilities.Tests.Example
 
             _mockBillingRepository.Verify(m => m.CreateUserAccount(It.IsAny<UserModel>()), Times.Never);
         }
+
+        [TestMethod]
+        public void TestWhenFailsToCreateBillingAccount()
+        {
+            // Arrange
+            _mockOrganizationRepository.Setup(m => m.CreateOrganization(It.IsAny<OrganizationModel>()));
+            _mockOrganizationRepository.Setup(m => m.DeleteOrganization(It.IsAny<Guid>()));
+
+            _mockUserProfileRepository.Setup(m => m.CreateUserProfile(It.IsAny<UserModel>()));
+            _mockUserProfileRepository.Setup(m => m.DeleteUserProfile(It.IsAny<Guid>()));
+
+            _mockBillingRepository.Setup(m => m.CreateUserAccount(It.IsAny<UserModel>())).Throws<Exception>();
+
+            UserModel user = new UserModel();
+            Exception exception = null;
+
+            // Act
+            try
+            {
+                _userService.RegisterUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            // Assert
+            Assert.IsInstanceOfType(exception, typeof(Exception));
+
+            _mockOrganizationRepository.Verify(m => m.CreateOrganization(It.IsAny<OrganizationModel>()), Times.Once);
+            _mockOrganizationRepository.Verify(m => m.DeleteOrganization(It.IsAny<Guid>()), Times.Once);
+
+            _mockUserProfileRepository.Verify(m => m.CreateUserProfile(It.IsAny<UserModel>()), Times.Once);
+            _mockUserProfileRepository.Verify(m => m.DeleteUserProfile(It.IsAny<Guid>()), Times.Once);
+
+            _mockBillingRepository.Verify(m => m.CreateUserAccount(It.IsAny<UserModel>()), Times.Once);
+        }
     }
 }
