@@ -36,6 +36,8 @@ namespace TransactionUtilities
 
         public void Commit(Enlistment enlistment)
         {
+            _rollbackHandlers = null;
+
             enlistment.Done();
         }
 
