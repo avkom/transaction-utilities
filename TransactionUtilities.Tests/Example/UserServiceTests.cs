@@ -41,17 +41,21 @@ namespace TransactionUtilities.Tests.Example
             _mockBillingRepository.Setup(m => m.CreateUserAccount(It.IsAny<UserModel>()));
 
             UserModel user = new UserModel();
+            Exception exception = null;
 
             // Act
             try
             {
                 _userService.RegisterUser(user);
             }
-            catch
+            catch (Exception e)
             {
+                exception = e;
             }
 
             // Assert
+            Assert.IsInstanceOfType(exception, typeof(Exception));
+
             _mockOrganizationRepository.Verify(m => m.CreateOrganization(It.IsAny<OrganizationModel>()), Times.Once);
             _mockOrganizationRepository.Verify(m => m.DeleteOrganization(It.IsAny<Guid>()), Times.Once);
 
