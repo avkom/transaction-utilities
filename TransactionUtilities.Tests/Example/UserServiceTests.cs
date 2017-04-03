@@ -57,7 +57,7 @@ namespace TransactionUtilities.Tests.Example
             Assert.IsInstanceOfType(exception, typeof(Exception));
 
             _mockOrganizationRepository.Verify(m => m.CreateOrganization(It.IsAny<OrganizationModel>()), Times.Once);
-            _mockOrganizationRepository.Verify(m => m.DeleteOrganization(It.IsAny<Guid>()), Times.Once);
+            _mockOrganizationRepository.Verify(m => m.DeleteOrganization(It.IsAny<Guid>()), Times.Never);
 
             _mockUserProfileRepository.Verify(m => m.CreateUserProfile(It.IsAny<UserModel>()), Times.Never);
             _mockUserProfileRepository.Verify(m => m.DeleteUserProfile(It.IsAny<Guid>()), Times.Never);
