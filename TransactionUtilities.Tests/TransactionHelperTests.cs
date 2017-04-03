@@ -21,5 +21,16 @@ namespace TransactionUtilities.Tests
             // Act
             _transactionHelper.AddTransactionRollbackHandler(null);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestAddTransactionRollbackHandlerThrowsNoCurrentTransaction()
+        {
+            // Arrange
+            Action handler = () => { };
+            
+            // Act
+            _transactionHelper.AddTransactionRollbackHandler(handler);
+        }
     }
 }
