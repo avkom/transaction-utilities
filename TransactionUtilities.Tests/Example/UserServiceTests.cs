@@ -29,6 +29,33 @@ namespace TransactionUtilities.Tests.Example
         }
 
         [TestMethod]
+        public void TestWhenSucceeds()
+        {
+            // Arrange
+            _mockOrganizationRepository.Setup(m => m.CreateOrganization(It.IsAny<OrganizationModel>()));
+            _mockOrganizationRepository.Setup(m => m.DeleteOrganization(It.IsAny<Guid>()));
+
+            _mockUserProfileRepository.Setup(m => m.CreateUserProfile(It.IsAny<UserModel>()));
+            _mockUserProfileRepository.Setup(m => m.DeleteUserProfile(It.IsAny<Guid>()));
+
+            _mockBillingRepository.Setup(m => m.CreateUserAccount(It.IsAny<UserModel>()));
+
+            UserModel user = new UserModel();
+
+            // Act
+            _userService.RegisterUser(user);
+
+            // Assert
+            _mockOrganizationRepository.Verify(m => m.CreateOrganization(It.IsAny<OrganizationModel>()), Times.Once);
+            _mockOrganizationRepository.Verify(m => m.DeleteOrganization(It.IsAny<Guid>()), Times.Never);
+
+            _mockUserProfileRepository.Verify(m => m.CreateUserProfile(It.IsAny<UserModel>()), Times.Once);
+            _mockUserProfileRepository.Verify(m => m.DeleteUserProfile(It.IsAny<Guid>()), Times.Never);
+
+            _mockBillingRepository.Verify(m => m.CreateUserAccount(It.IsAny<UserModel>()), Times.Once);
+        }
+
+        [TestMethod]
         public void TestWhenFailsToCreateOrganization()
         {
             // Arrange
