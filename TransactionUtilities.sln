@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionUtilities", "TransactionUtilities.csproj", "{456AC1A3-8C61-4273-83B4-0D606F8E6CE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionUtilities", "TransactionUtilities\TransactionUtilities.csproj", "{456AC1A3-8C61-4273-83B4-0D606F8E6CE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionUtilities.Tests", "..\TransactionUtilities.Tests\TransactionUtilities.Tests.csproj", "{44EA65F3-FC88-400C-BABF-3B603D173220}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionUtilities.Tests", "TransactionUtilities.Tests\TransactionUtilities.Tests.csproj", "{44EA65F3-FC88-400C-BABF-3B603D173220}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
