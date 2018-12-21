@@ -29,3 +29,54 @@ public void RegisterUser(UserModel user)
     }
 }
 ```
+
+# Saga Pattern Implementation
+
+In the following example, the method `DoStep4()` throws an exception, so `RollbackStep3()` and `RollbackStep2()` compensation methods will be called when exiting `using` statement. `RollbackStep1()` will not be called because `saga.Commit()` was called after registering the compensation action for the first step.
+The private methods will be called in the following order:
+1. `DoStep1();`
+2. `DoStep2();`
+3. `DoStep3();`
+4. `DoStep4();` - this method throws an exception
+5. `RollbackStep3();`
+6. `RollbackStep2();`
+
+```c#
+public void DoSomeComplexAction()
+{
+    using (Saga saga = new Saga())
+    {
+        DoStep1();
+        saga.RegisterCompensation(RollbackStep1);
+
+        saga.Commit();
+
+        DoStep2();
+        saga.RegisterCompensation(RollbackStep2);
+
+        DoStep3();
+        saga.RegisterCompensation(RollbackStep3);
+
+        DoStep4();
+        saga.RegisterCompensation(RollbackStep4);
+
+        saga.Commit();
+    }
+
+    private void DoStep1() {}
+
+    private void RollbackStep1() {}
+
+    private void DoStep2() {}
+
+    private void RollbackStep2() {}
+
+    private void DoStep3() {}
+
+    private void RollbackStep3() {}
+
+    private void DoStep4() { throw new ApplicationException(); }
+
+    private void RollbackStep4() {}
+}
+```

@@ -11,14 +11,17 @@ namespace TransactionUtilities.Tests
         public void TestMultipleCommits()
         {
             // Arrange
-            Mock<Action> compensation0 = new Mock<Action>();
-            compensation0.Setup(m => m());
+            Mock<Action> rollbackStep1 = new Mock<Action>();
+            rollbackStep1.Setup(m => m());
 
-            Mock<Action> compensation1 = new Mock<Action>();
-            compensation0.Setup(m => m());
+            Mock<Action> rollbackStep2 = new Mock<Action>();
+            rollbackStep1.Setup(m => m());
 
-            Mock<Action> compensation2 = new Mock<Action>();
-            compensation0.Setup(m => m());
+            Mock<Action> rollbackStep3 = new Mock<Action>();
+            rollbackStep1.Setup(m => m());
+
+            Mock<Action> rollbackStep4 = new Mock<Action>();
+            rollbackStep4.Setup(m => m());
 
             Exception exception = null;
 
@@ -27,16 +30,19 @@ namespace TransactionUtilities.Tests
             {
                 using (Saga saga = new Saga())
                 {
-                    DoAction0();
-                    saga.RegisterCompensation(compensation0.Object);
+                    DoStep1();
+                    saga.RegisterCompensation(rollbackStep1.Object);
 
                     saga.Commit();
 
-                    DoAction1();
-                    saga.RegisterCompensation(compensation1.Object);
+                    DoStep2();
+                    saga.RegisterCompensation(rollbackStep2.Object);
 
-                    DoAction2();
-                    saga.RegisterCompensation(compensation2.Object);
+                    DoStep3();
+                    saga.RegisterCompensation(rollbackStep3.Object);
+
+                    DoStep4();
+                    saga.RegisterCompensation(rollbackStep4.Object);
 
                     saga.Commit();
                 }
@@ -48,20 +54,26 @@ namespace TransactionUtilities.Tests
 
             // Assert
             Assert.IsInstanceOfType(exception, typeof(ApplicationException));
-            compensation0.Verify(m => m(), Times.Never);
-            compensation1.Verify(m => m(), Times.Once);
-            compensation2.Verify(m => m(), Times.Never);
+
+            rollbackStep1.Verify(m => m(), Times.Never);
+            rollbackStep2.Verify(m => m(), Times.Once);
+            rollbackStep3.Verify(m => m(), Times.Once);
+            rollbackStep4.Verify(m => m(), Times.Never);
         }
 
-        private void DoAction0()
+        private void DoStep1()
         {
         }
 
-        private void DoAction1()
+        private void DoStep2()
         {
         }
 
-        private void DoAction2()
+        private void DoStep3()
+        {
+        }
+
+        private void DoStep4()
         {
             throw new ApplicationException();
         }
