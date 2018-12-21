@@ -73,6 +73,7 @@
     <Compile Include="Example\UserServiceTests.cs" />
     <Compile Include="Example\UserModel.cs" />
     <Compile Include="Example\UserService.cs" />
+    <Compile Include="SagaTests.cs" />
     <Compile Include="TransactionHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
